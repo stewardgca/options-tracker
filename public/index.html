@@ -14,13 +14,28 @@
       <p class="subtitle">Positions &amp; underlying prices</p>
     </header>
 
-    <section id="positions" class="positions" aria-live="polite">
-      <!-- Position cards are rendered by app.js -->
-    </section>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th class="num">Price</th>
+            <th class="num">Change</th>
+            <th>Position</th>
+            <th class="num">Value</th>
+            <th class="num">P&amp;L</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody id="positions" aria-live="polite">
+          <!-- Rows are rendered by app.js -->
+        </tbody>
+      </table>
+    </div>
 
     <footer class="footer">
       <p id="status-line">Loading prices…</p>
-      <p class="fineprint">Prices via Yahoo Finance / Stooq through the site's own proxy. Not investment advice.</p>
+      <p class="fineprint">Prices via Hyperliquid (MU, NVDA) and Yahoo Finance (QQQ) through the site's own proxy. Not investment advice.</p>
     </footer>
   </main>
   <script src="/app.js"></script>
