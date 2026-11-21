@@ -5,6 +5,27 @@
 const YAHOO_UA =
   "Mozilla/5.0 (compatible; OptionsTracker/1.0; +https://github.com/stewardgca/options-tracker)";
 
+async function quoteFromHyperliquid(symbol) {
+  // Tokenised-equity perps on the xyz dex, e.g. xyz:MU. Trades around the
+  // clock, so this is the live price even when the stock market is closed.
+  const res = await fetch("https://api.hyperliquid.xyz/info", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: "allMids", dex: "xyz" }),
+  });
+  if (!res.ok) throw new Error(`Hyperliquid ${res.status}`);
+  const mids = await res.json();
+  const mid = parseFloat(mids[`xyz:${symbol}`]);
+  if (!Number.isFinite(mid)) throw new Error(`Hyperliquid: no xyz:${symbol}`);
+  return {
+    symbol,
+    price: mid,
+    currency: "USD",
+    asOf: new Date().toISOString(),
+    source: `Hyperliquid xyz:${symbol}`,
+  };
+}
+
 async function quoteFromYahoo(symbol) {
   const url =
     `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}` +
@@ -58,17 +79,26 @@ async function quoteFromStooq(symbol) {
 }
 
 async function handleQuote(symbol) {
+  // MU: Hyperliquid xyz:MU perp first (live even when the market is closed),
+  // with Yahoo's last stock close as the reference for the day change.
+  if (symbol === "MU") {
+    try {
+      const [hl, yh] = await Promise.all([
+        quoteFromHyperliquid(symbol),
+        quoteFromYahoo(symbol).catch(() => null),
+      ]);
+      return jsonResponse({
+        ...hl,
+        previousClose: yh ? yh.price : null,
+      });
+    } catch (e) {
+      // fall through to the Yahoo/Stooq chain below
+    }
+  }
   const errors = [];
   for (const fn of [quoteFromYahoo, quoteFromStooq]) {
     try {
-      const q = await fn(symbol);
-      return new Response(JSON.stringify(q), {
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "max-age=30",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
+      return jsonResponse(await fn(symbol));
     } catch (e) {
       errors.push(String(e));
     }
@@ -83,6 +113,16 @@ async function handleQuote(symbol) {
       },
     },
   );
+}
+
+function jsonResponse(q) {
+  return new Response(JSON.stringify(q), {
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "max-age=30",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
 }
 
 export default {

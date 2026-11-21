@@ -97,7 +97,8 @@ function priceBlock(pos, quote) {
   const prevClose = live ? quote.previousClose : null;
   const change = prevClose != null ? price - prevClose : null;
   const changePct = change != null && prevClose ? (change / prevClose) * 100 : null;
-  return { live, price, asOf, prevClose, change, changePct };
+  const source = live ? quote.source : null;
+  return { live, price, asOf, prevClose, change, changePct, source };
 }
 
 function headerHtml(pos, live) {
@@ -121,7 +122,7 @@ function priceHtml(p) {
           : ""
       }
     </div>
-    <div class="as-of">As of ${p.asOf} · USD</div>`;
+    <div class="as-of">As of ${p.asOf}${p.source ? ` · ${p.source}` : ""} · USD</div>`;
 }
 
 function renderShares(pos, quote) {
