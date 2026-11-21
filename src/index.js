@@ -12,13 +12,21 @@ async function quoteFromYahoo(symbol) {
   const res = await fetch(url, { headers: { "User-Agent": YAHOO_UA } });
   if (!res.ok) throw new Error(`Yahoo ${res.status}`);
   const data = await res.json();
-  const meta = data?.chart?.result?.[0]?.meta;
+  const result = data?.chart?.result?.[0];
+  const meta = result?.meta;
   const price = meta?.regularMarketPrice;
   if (typeof price !== "number") throw new Error("Yahoo: no price");
+  // meta.chartPreviousClose is the close before the 5-day window, not
+  // yesterday's close — take the second-to-last close from the chart itself.
+  const closes = (result?.indicators?.quote?.[0]?.close || []).filter(
+    (c) => typeof c === "number",
+  );
+  const previousClose =
+    closes.length >= 2 ? closes[closes.length - 2] : null;
   return {
     symbol: meta.symbol || symbol,
     price,
-    previousClose: meta.chartPreviousClose ?? null,
+    previousClose,
     currency: meta.currency || "USD",
     asOf: meta.regularMarketTime
       ? new Date(meta.regularMarketTime * 1000).toISOString()
