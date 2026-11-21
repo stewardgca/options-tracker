@@ -79,9 +79,9 @@ async function quoteFromStooq(symbol) {
 }
 
 async function handleQuote(symbol) {
-  // MU: Hyperliquid xyz:MU perp first (live even when the market is closed),
-  // with Yahoo's last stock close as the reference for the day change.
-  if (symbol === "MU") {
+  // MU, NVDA: Hyperliquid xyz perps first (live even when the market is
+  // closed), with Yahoo's last stock close as the reference for the day change.
+  if (["MU", "NVDA"].includes(symbol)) {
     try {
       const [hl, yh] = await Promise.all([
         quoteFromHyperliquid(symbol),
