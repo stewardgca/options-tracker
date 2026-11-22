@@ -1,9 +1,39 @@
-// Options Tracker — Cloudflare Worker
+// Portfolio Tracker — Cloudflare Worker
 // Serves the static site from ./public and proxies live stock quotes
 // through /api/quote so the browser never hits Yahoo directly (no CORS issues).
 
 const YAHOO_UA =
   "Mozilla/5.0 (compatible; OptionsTracker/1.0; +https://github.com/stewardgca/options-tracker)";
+
+// Hyperliquid spot (xStocks) token indices in allMids (no dex):
+// QQQX = @704 (tracks QQQ), SPYX = @703 (tracks SPY).
+// Verified 22 Nov 2026: @704 mid 624.105 matched the QQQX/USDC order-book
+// mid exactly; @703 mid 705.755 matched SPYX/USDC within $0.04.
+// Both trade 24/7 and were ~2.3–2.7% above the Friday ETF closes on
+// Sunday morning, so they are live token prices, not the ETF close.
+const SPOT_INDEX = { QQQ: "704", SPY: "703" };
+
+async function quoteFromHyperliquidSpot(symbol) {
+  const res = await fetch("https://api.hyperliquid.xyz/info", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: "allMids" }),
+  });
+  if (!res.ok) throw new Error(`Hyperliquid ${res.status}`);
+  const data = await res.json();
+  const mids = data && typeof data === "object" && data.mids ? data.mids : data;
+  const mid = parseFloat(mids[`@${SPOT_INDEX[symbol]}`]);
+  if (!Number.isFinite(mid))
+    throw new Error(`Hyperliquid: no spot @${SPOT_INDEX[symbol]} for ${symbol}`);
+  const token = symbol === "QQQ" ? "QQQX" : "SPYX";
+  return {
+    symbol,
+    price: mid,
+    currency: "USD",
+    asOf: new Date().toISOString(),
+    source: `Hyperliquid ${token}/USDC`,
+  };
+}
 
 async function quoteFromHyperliquid(symbol) {
   // Tokenised-equity perps on the xyz dex, e.g. xyz:MU. Trades around the
@@ -79,6 +109,22 @@ async function quoteFromStooq(symbol) {
 }
 
 async function handleQuote(symbol) {
+  // QQQ, SPY: Hyperliquid spot xStocks tokens first (QQQX @704, SPYX @703),
+  // with Yahoo's last ETF close as the reference for the day change.
+  if (SPOT_INDEX[symbol]) {
+    try {
+      const [hl, yh] = await Promise.all([
+        quoteFromHyperliquidSpot(symbol),
+        quoteFromYahoo(symbol).catch(() => null),
+      ]);
+      return jsonResponse({
+        ...hl,
+        previousClose: yh ? yh.price : null,
+      });
+    } catch (e) {
+      // fall through to the Yahoo/Stooq chain below
+    }
+  }
   // MU, NVDA, GOLD: Hyperliquid xyz perps first (live even when the market
   // is closed). For MU/NVDA, Yahoo's last stock close is the reference for
   // the day change; GOLD has no Yahoo stock equivalent, so it has no

@@ -1,7 +1,8 @@
-// Options Tracker — positions and live prices, one compact row per position.
+// Portfolio Tracker — positions and live prices, one compact row per position.
 // To add a position, append an entry to POSITIONS. Prices are fetched from
 // the site's own /api/quote proxy (Worker -> Hyperliquid xyz perps for MU,
-// NVDA and GOLD, Yahoo Finance for the rest, Stooq fallback).
+// NVDA and GOLD, Hyperliquid spot xStocks for QQQ (QQQX) and SPY (SPYX),
+// Yahoo Finance as the close reference, Stooq fallback).
 //
 // Position kinds:
 //   shares    — shares held (e.g. assigned from a short put), with cost basis
@@ -34,7 +35,13 @@ const POSITIONS = [
     contracts: 1,
     strike: 660,
     expiry: "27 Nov 2026",
-    lastKnownPrice: 608.45,
+    lastKnownPrice: 608.45, // price now via Hyperliquid QQQX/USDC spot (@704)
+  },
+  {
+    kind: "watch",
+    symbol: "SPY",
+    name: "S&P 500 (SPYX)",
+    lastKnownPrice: 689.81, // Friday 20 Nov 2026 ETF close; live price via Hyperliquid SPYX/USDC spot (@703)
   },
   {
     kind: "watch",
