@@ -79,14 +79,19 @@ async function quoteFromStooq(symbol) {
 }
 
 async function handleQuote(symbol) {
-  // MU, NVDA: Hyperliquid xyz perps first (live even when the market is
-  // closed), with Yahoo's last stock close as the reference for the day change.
-  if (["MU", "NVDA"].includes(symbol)) {
+  // MU, NVDA, GOLD: Hyperliquid xyz perps first (live even when the market
+  // is closed). For MU/NVDA, Yahoo's last stock close is the reference for
+  // the day change; GOLD has no Yahoo stock equivalent, so it has no
+  // previousClose and the change column shows "—".
+  // Note: xyz lists GOLD and SP500, but not SPY, GLD, QQQ, SPYX or QQQX
+  // (checked 22 Nov 2026), so those stay on Yahoo if added.
+  if (["MU", "NVDA", "GOLD"].includes(symbol)) {
     try {
-      const [hl, yh] = await Promise.all([
-        quoteFromHyperliquid(symbol),
-        quoteFromYahoo(symbol).catch(() => null),
-      ]);
+      const hl = await quoteFromHyperliquid(symbol);
+      const yh =
+        symbol === "GOLD"
+          ? null
+          : await quoteFromYahoo(symbol).catch(() => null);
       return jsonResponse({
         ...hl,
         previousClose: yh ? yh.price : null,
@@ -94,6 +99,17 @@ async function handleQuote(symbol) {
     } catch (e) {
       // fall through to the Yahoo/Stooq chain below
     }
+  }
+  // GOLD must never fall back to Yahoo "GOLD" — that is Barrick Gold stock,
+  // not gold. If Hyperliquid fails, report unavailable instead.
+  if (symbol === "GOLD") {
+    return new Response(JSON.stringify({ error: "quote unavailable" }), {
+      status: 502,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
   }
   const errors = [];
   for (const fn of [quoteFromYahoo, quoteFromStooq]) {

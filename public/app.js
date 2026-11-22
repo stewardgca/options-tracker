@@ -1,11 +1,12 @@
 // Options Tracker — positions and live prices, one compact row per position.
 // To add a position, append an entry to POSITIONS. Prices are fetched from
-// the site's own /api/quote proxy (Worker -> Hyperliquid xyz perps for MU and
-// NVDA, Yahoo Finance for the rest, Stooq fallback).
+// the site's own /api/quote proxy (Worker -> Hyperliquid xyz perps for MU,
+// NVDA and GOLD, Yahoo Finance for the rest, Stooq fallback).
 //
 // Position kinds:
 //   shares    — shares held (e.g. assigned from a short put), with cost basis
 //   short-put — a short put still open; shows strike, expiry and intrinsic value
+//   watch     — price only, no position held; no value or P&L
 
 const POSITIONS = [
   {
@@ -34,6 +35,12 @@ const POSITIONS = [
     strike: 660,
     expiry: "27 Nov 2026",
     lastKnownPrice: 608.45,
+  },
+  {
+    kind: "watch",
+    symbol: "GOLD",
+    name: "Gold (xyz perp)",
+    lastKnownPrice: 3557.05, // Hyperliquid xyz:GOLD mid, 22 Nov 2026
   },
 ];
 
@@ -132,6 +139,22 @@ function renderShortPutRow(pos, quote) {
   return tr;
 }
 
+function renderWatchRow(pos, quote) {
+  const p = priceBlock(pos, quote);
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><span class="sym">${pos.symbol}<small>${pos.name}</small></span></td>
+    <td class="num"><span class="price"><span class="dot ${p.live ? "live" : "stale"}"></span>${fmtUSD(p.price)}</span><span class="src">${shortSource(p.source)}</span></td>
+    <td class="num ${p.change == null ? "" : p.change >= 0 ? "up" : "down"}">${
+      p.change == null ? "—" : `${fmtSigned(p.change)}<br><span>(${fmtSignedPlain(p.changePct)}%)</span>`
+    }</td>
+    <td><span class="muted">Price only</span></td>
+    <td class="num">—</td>
+    <td class="num">—</td>
+    <td><span class="muted">—</span></td>`;
+  return tr;
+}
+
 async function renderAll() {
   const tbody = document.getElementById("positions");
   const status = document.getElementById("status-line");
@@ -148,7 +171,9 @@ async function renderAll() {
     tbody.appendChild(
       pos.kind === "short-put"
         ? renderShortPutRow(pos, quote)
-        : renderSharesRow(pos, quote),
+        : pos.kind === "watch"
+          ? renderWatchRow(pos, quote)
+          : renderSharesRow(pos, quote),
     );
   }
   const now = new Date().toLocaleTimeString("en-SG", {
