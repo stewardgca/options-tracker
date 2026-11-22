@@ -49,6 +49,18 @@ const POSITIONS = [
     name: "Gold (xyz perp)",
     lastKnownPrice: 3557.05, // Hyperliquid xyz:GOLD mid, 22 Nov 2026
   },
+  {
+    kind: "watch",
+    symbol: "GLD",
+    name: "SPDR Gold Shares",
+    lastKnownPrice: 322.87, // Yahoo Finance, Fri 20 Nov 2026 close
+  },
+  {
+    kind: "watch",
+    symbol: "SLV",
+    name: "iShares Silver Trust",
+    lastKnownPrice: 36.97, // Yahoo Finance, Fri 20 Nov 2026 close
+  },
 ];
 
 const REFRESH_MS = 60_000;
