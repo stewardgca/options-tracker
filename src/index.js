@@ -125,13 +125,13 @@ async function handleQuote(symbol) {
       // fall through to the Yahoo/Stooq chain below
     }
   }
-  // MU, NVDA, GOLD: Hyperliquid xyz perps first (live even when the market
-  // is closed). For MU/NVDA, Yahoo's last stock close is the reference for
+  // MU, NVDA, AMD, GOLD: Hyperliquid xyz perps first (live even when the market
+  // is closed). For MU/NVDA/AMD, Yahoo's last stock close is the reference for
   // the day change; GOLD has no Yahoo stock equivalent, so it has no
   // previousClose and the change column shows "—".
   // Note: xyz lists GOLD and SP500, but not SPY, GLD, QQQ, SPYX or QQQX
   // (checked 22 Nov 2026), so those stay on Yahoo if added.
-  if (["MU", "NVDA", "GOLD"].includes(symbol)) {
+  if (["MU", "NVDA", "AMD", "GOLD"].includes(symbol)) {
     try {
       const hl = await quoteFromHyperliquid(symbol);
       const yh =

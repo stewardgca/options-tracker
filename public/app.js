@@ -1,7 +1,7 @@
 // Portfolio Tracker — positions and live prices, one compact row per position.
 // To add a position, append an entry to POSITIONS. Prices are fetched from
 // the site's own /api/quote proxy (Worker -> Hyperliquid xyz perps for MU,
-// NVDA and GOLD, Hyperliquid spot xStocks for QQQ (QQQX) and SPY (SPYX),
+// NVDA, AMD and GOLD, Hyperliquid spot xStocks for QQQ (QQQX) and SPY (SPYX),
 // Yahoo Finance as the close reference, Stooq fallback).
 //
 // Position kinds:
@@ -36,6 +36,15 @@ const POSITIONS = [
     strike: 660,
     expiry: "27 Nov 2026",
     lastKnownPrice: 608.45, // price now via Hyperliquid QQQX/USDC spot (@704)
+  },
+  {
+    kind: "short-put",
+    symbol: "AMD",
+    name: "Advanced Micro Devices",
+    contracts: 1,
+    strike: 410,
+    expiry: "24 Dec 2026",
+    lastKnownPrice: 410.85, // price now via Hyperliquid xyz:AMD; 25 Nov 2026 Moomoo underlying
   },
   {
     kind: "watch",
