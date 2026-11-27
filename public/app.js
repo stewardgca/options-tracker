@@ -274,8 +274,8 @@ async function renderOptionsPositions() {
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
       <td>${expiry}</td>
+      <td class="num">${fmtUSD(ref)}</td>
       <td class="num">${fmtUSD(o.avg, o.avg < 1 ? 4 : 2)}</td>
-      <td class="num">${fmtUSD(o.current, o.current < 1 ? 4 : 2)}</td>
       <td class="num">${fmtUSD(o.mv, 2)}</td>
       <td class="num ${o.pnl >= 0 ? "pos" : "neg"}">${fmtSigned(o.pnl, 2)}</td>`;
     tbody.appendChild(tr);
