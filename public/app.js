@@ -80,33 +80,33 @@ const REFRESH_MS = 60_000;
 // expiry first. 6 puts + 15 calls = 21 contracts.
 const OPTIONS_POSITIONS = [
   // 27 Nov 2026
-  { symbol: "SLV", strike: 54.5, type: "C", expiry: "2026-11-27", avg: 0.65, current: 0.0001, mv: -0.01, pnl: 64.99 },
-  { symbol: "IBIT", strike: 53, type: "C", expiry: "2026-11-27", avg: 0.56, current: 0.0001, mv: -0.01, pnl: 55.99 },
+  { symbol: "SLV", strike: 54.5, type: "C", expiry: "2026-11-27", avg: 0.65, current: 0.0001, mv: -0.01, pnl: 64.99, underlying: 36.85 },
+  { symbol: "IBIT", strike: 53, type: "C", expiry: "2026-11-27", avg: 0.56, current: 0.0001, mv: -0.01, pnl: 55.99, underlying: 33.52 },
   // 4 Dec 2026
-  { symbol: "AAPL", strike: 300, type: "P", expiry: "2026-12-04", avg: 0.62, current: 0.153, mv: -15.3, pnl: 46.7 },
-  { symbol: "SLV", strike: 52.5, type: "C", expiry: "2026-12-04", avg: 0.47, current: 0.003, mv: -0.29, pnl: 46.71 },
-  { symbol: "INTC", strike: 75, type: "C", expiry: "2026-12-04", avg: 0.57, current: 0.055, mv: -5.52, pnl: 51.48 },
-  { symbol: "DRAM", strike: 49, type: "C", expiry: "2026-12-04", avg: 0.96, current: 0.062, mv: -6.18, pnl: 89.82 },
+  { symbol: "AAPL", strike: 300, type: "P", expiry: "2026-12-04", avg: 0.62, current: 0.153, mv: -15.3, pnl: 46.7, underlying: 354.04 },
+  { symbol: "SLV", strike: 52.5, type: "C", expiry: "2026-12-04", avg: 0.47, current: 0.003, mv: -0.29, pnl: 46.71, underlying: 36.85 },
+  { symbol: "INTC", strike: 75, type: "C", expiry: "2026-12-04", avg: 0.57, current: 0.055, mv: -5.52, pnl: 51.48, underlying: 54.55 },
+  { symbol: "DRAM", strike: 49, type: "C", expiry: "2026-12-04", avg: 0.96, current: 0.062, mv: -6.18, pnl: 89.82, underlying: 35.54 },
   // 11 Dec 2026
-  { symbol: "TSM", strike: 350, type: "P", expiry: "2026-12-11", avg: 2.61, current: 20.3, mv: -2030.04, pnl: -1769.04 },
-  { symbol: "MU", strike: 550, type: "P", expiry: "2026-12-11", avg: 9.4, current: 20.65, mv: -2064.75, pnl: -1124.75 },
-  { symbol: "SLV", strike: 53.5, type: "C", expiry: "2026-12-11", avg: 0.53, current: 0.025, mv: -2.5, pnl: 50.5 },
-  { symbol: "GLD", strike: 377, type: "C", expiry: "2026-12-11", avg: 2.59, current: 0.218, mv: -21.76, pnl: 237.24 },
+  { symbol: "TSM", strike: 350, type: "P", expiry: "2026-12-11", avg: 2.61, current: 20.3, mv: -2030.04, pnl: -1769.04, underlying: 346.66 },
+  { symbol: "MU", strike: 550, type: "P", expiry: "2026-12-11", avg: 9.4, current: 20.65, mv: -2064.75, pnl: -1124.75, underlying: 621.97 },
+  { symbol: "SLV", strike: 53.5, type: "C", expiry: "2026-12-11", avg: 0.53, current: 0.025, mv: -2.5, pnl: 50.5, underlying: 36.85 },
+  { symbol: "GLD", strike: 377, type: "C", expiry: "2026-12-11", avg: 2.59, current: 0.218, mv: -21.76, pnl: 237.24, underlying: 324.75 },
   // 18 Dec 2026
-  { symbol: "SLV", strike: 55, type: "C", expiry: "2026-12-18", avg: 0.42, current: 0.045, mv: -4.53, pnl: 37.47 },
-  { symbol: "NVDA", strike: 193, type: "C", expiry: "2026-12-18", avg: 1.37, current: 1.4, mv: -140, pnl: -3 },
-  { symbol: "GOOG", strike: 335, type: "C", expiry: "2026-12-18", avg: 0.94, current: 0.296, mv: -29.64, pnl: 64.36 },
-  { symbol: "GOOG", strike: 295, type: "C", expiry: "2026-12-18", avg: 9.55, current: 3.852, mv: -385.23, pnl: 569.77 },
-  { symbol: "DRAM", strike: 52, type: "C", expiry: "2026-12-18", avg: 0.26, current: 0.187, mv: -18.66, pnl: 7.34 },
+  { symbol: "SLV", strike: 55, type: "C", expiry: "2026-12-18", avg: 0.42, current: 0.045, mv: -4.53, pnl: 37.47, underlying: 36.85 },
+  { symbol: "NVDA", strike: 193, type: "C", expiry: "2026-12-18", avg: 1.37, current: 1.4, mv: -140, pnl: -3, underlying: 152.48 },
+  { symbol: "GOOG", strike: 335, type: "C", expiry: "2026-12-18", avg: 0.94, current: 0.296, mv: -29.64, pnl: 64.36, underlying: 275.88 },
+  { symbol: "GOOG", strike: 295, type: "C", expiry: "2026-12-18", avg: 9.55, current: 3.852, mv: -385.23, pnl: 569.77, underlying: 275.88 },
+  { symbol: "DRAM", strike: 52, type: "C", expiry: "2026-12-18", avg: 0.26, current: 0.187, mv: -18.66, pnl: 7.34, underlying: 35.54 },
   // 24 Dec 2026
-  { symbol: "SPY", strike: 660, type: "P", expiry: "2026-12-24", avg: 7.03, current: 4.875, mv: -487.5, pnl: 215.5 },
-  { symbol: "QQQ", strike: 645, type: "P", expiry: "2026-12-24", avg: 28.81, current: 25.99, mv: -2598.9, pnl: 282.1 },
-  { symbol: "AMD", strike: 410, type: "P", expiry: "2026-12-24", avg: 22.69, current: 38.97, mv: -3897.31, pnl: -1628.31 },
-  { symbol: "SLV", strike: 55, type: "C", expiry: "2026-12-24", avg: 0.53, current: 0.054, mv: -5.4, pnl: 47.6 },
+  { symbol: "SPY", strike: 660, type: "P", expiry: "2026-12-24", avg: 7.03, current: 4.875, mv: -487.5, pnl: 215.5, underlying: 716.54 },
+  { symbol: "QQQ", strike: 645, type: "P", expiry: "2026-12-24", avg: 28.81, current: 25.99, mv: -2598.9, pnl: 282.1, underlying: 635.32 },
+  { symbol: "AMD", strike: 410, type: "P", expiry: "2026-12-24", avg: 22.69, current: 38.97, mv: -3897.31, pnl: -1628.31, underlying: 410.85 },
+  { symbol: "SLV", strike: 55, type: "C", expiry: "2026-12-24", avg: 0.53, current: 0.054, mv: -5.4, pnl: 47.6, underlying: 36.85 },
   // 31 Dec 2026
-  { symbol: "SLV", strike: 50.5, type: "C", expiry: "2026-12-31", avg: 0.53, current: 0.123, mv: -12.28, pnl: 40.72 },
+  { symbol: "SLV", strike: 50.5, type: "C", expiry: "2026-12-31", avg: 0.53, current: 0.123, mv: -12.28, pnl: 40.72, underlying: 36.85 },
   // 15 Jan 2027
-  { symbol: "SLV", strike: 48, type: "C", expiry: "2027-01-15", avg: 0.35, current: 0.351, mv: -35.05, pnl: -0.05 },
+  { symbol: "SLV", strike: 48, type: "C", expiry: "2027-01-15", avg: 0.35, current: 0.351, mv: -35.05, pnl: -0.05, underlying: 36.85 },
 ];
 const fmtUSD = (n, dp = 2) =>
   n.toLocaleString("en-US", {
@@ -218,9 +218,38 @@ function renderWatchRow(pos, quote) {
   return tr;
 }
 
-function renderOptionsPositions() {
+// Breach price for a quote: for Hyperliquid rows the live perp/token price
+// can sit well above the stock/ETF close (QQQX/SPYX tokens, 24/7 perps), so
+// use the Yahoo close reference (previousClose) as the breach test there.
+// For Yahoo rows the price itself is the last close.
+function breachPriceFromQuote(q) {
+  if (!q || typeof q.price !== "number") return null;
+  if (
+    typeof q.source === "string" &&
+    q.source.startsWith("Hyperliquid") &&
+    typeof q.previousClose === "number"
+  ) {
+    return q.previousClose;
+  }
+  return q.price;
+}
+
+async function renderOptionsPositions() {
   const tbody = document.getElementById("options-positions");
   if (!tbody) return;
+  // One live quote per underlying, in parallel; fall back to the 25 Nov
+  // snapshot underlying if a quote fails.
+  const symbols = [...new Set(OPTIONS_POSITIONS.map((o) => o.symbol))];
+  const quotes = {};
+  await Promise.all(
+    symbols.map(async (s) => {
+      try {
+        quotes[s] = await fetchQuote(s);
+      } catch (e) {
+        console.warn(`quote failed for ${s}:`, e);
+      }
+    }),
+  );
   const sorted = [...OPTIONS_POSITIONS].sort(
     (a, b) => new Date(a.expiry) - new Date(b.expiry),
   );
@@ -230,11 +259,15 @@ function renderOptionsPositions() {
   for (const o of sorted) {
     totalMv += o.mv;
     totalPnl += o.pnl;
+    const ref = breachPriceFromQuote(quotes[o.symbol]) ?? o.underlying;
+    const breached =
+      o.type === "P" ? ref < o.strike : ref > o.strike;
     const expiry = new Date(`${o.expiry}T12:00:00+08:00`).toLocaleDateString(
       "en-SG",
       { day: "numeric", month: "short", year: "numeric" },
     );
     const tr = document.createElement("tr");
+    if (breached) tr.className = "breached";
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
       <td>${expiry}</td>

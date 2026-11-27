@@ -126,3 +126,14 @@ th {
   color: var(--muted);
   font-size: 12px;
 }
+
+tr.breached td { background: rgba(245, 181, 68, 0.22); }
+.legend-yellow {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(245, 181, 68, 0.55);
+  vertical-align: -1px;
+  margin-right: 4px;
+}
