@@ -262,12 +262,15 @@ async function renderOptionsPositions() {
     const ref = breachPriceFromQuote(quotes[o.symbol]) ?? o.underlying;
     const breached =
       o.type === "P" ? ref < o.strike : ref > o.strike;
+    const near =
+      !breached && Math.abs(ref - o.strike) / o.strike <= 0.01;
     const expiry = new Date(`${o.expiry}T12:00:00+08:00`).toLocaleDateString(
       "en-SG",
       { day: "numeric", month: "short", year: "numeric" },
     );
     const tr = document.createElement("tr");
     if (breached) tr.className = "breached";
+    else if (near) tr.className = "near";
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
       <td>${expiry}</td>
