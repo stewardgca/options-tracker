@@ -264,7 +264,11 @@ async function renderOptionsPositions() {
       o.type === "P" ? ref < o.strike : ref > o.strike;
     const near =
       !breached && Math.abs(ref - o.strike) / o.strike <= 0.01;
-    const pctFromStrike = ((ref - o.strike) / o.strike) * 100;
+    // % away from the strike, signed by breach status: positive while the
+    // strike is still safe, negative once breached. Puts breach below the
+    // strike, calls breach above it.
+    const pctFromStrike =
+      ((o.type === "P" ? ref - o.strike : o.strike - ref) / o.strike) * 100;
     const expiry = new Date(`${o.expiry}T12:00:00+08:00`).toLocaleDateString(
       "en-SG",
       { day: "numeric", month: "short", year: "numeric" },
@@ -275,7 +279,7 @@ async function renderOptionsPositions() {
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
       <td>${expiry}</td>
-      <td class="num">${fmtUSD(ref)}<br><span class="muted">${fmtSignedPlain(pctFromStrike)}% from strike</span></td>
+      <td class="num">${fmtUSD(ref)}<br><span class="muted">(${fmtSignedPlain(pctFromStrike)}%)</span></td>
       <td class="num">${fmtUSD(o.avg, o.avg < 1 ? 4 : 2)}</td>
       <td class="num">${fmtUSD(o.mv, 2)}</td>
       <td class="num ${o.pnl >= 0 ? "pos" : "neg"}">${fmtSigned(o.pnl, 2)}</td>`;
