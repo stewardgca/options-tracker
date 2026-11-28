@@ -131,6 +131,8 @@ tr.breached td { background: rgba(255, 92, 92, 0.28); }
 tr.near td { background: rgba(245, 181, 68, 0.22); }
 tr.low-value td { color: #6aa8ff; }
 tr.low-value td.pos, tr.low-value td.neg { color: #6aa8ff; }
+.clock { display: block; margin-top: 2px; color: var(--muted); }
+.clock svg { width: 12px; height: 12px; }
 .legend-yellow {
   display: inline-block;
   width: 10px;

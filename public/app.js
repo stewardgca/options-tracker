@@ -269,6 +269,11 @@ async function renderOptionsPositions() {
     // strike, calls breach above it.
     const pctFromStrike =
       ((o.type === "P" ? ref - o.strike : o.strike - ref) / o.strike) * 100;
+    const daysLeft = Math.ceil(
+      (new Date(`${o.expiry}T16:00:00-05:00`) - Date.now()) /
+        (1000 * 60 * 60 * 24),
+    );
+    const expiringThisWeek = daysLeft >= 0 && daysLeft <= 7;
     const expiry = new Date(`${o.expiry}T12:00:00+08:00`).toLocaleDateString(
       "en-SG",
       { day: "numeric", month: "short", year: "numeric" },
@@ -282,7 +287,11 @@ async function renderOptionsPositions() {
       .filter(Boolean)
       .join(" ");
     tr.innerHTML = `
-      <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
+      <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span>${
+        expiringThisWeek
+          ? `<span class="clock" title="Expiring this week"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>`
+          : ""
+      }</td>
       <td>${expiry}</td>
       <td class="num">${fmtUSD(ref)}<br><span class="muted">(${fmtSignedPlain(pctFromStrike)}%)</span></td>
       <td class="num">${fmtUSD(o.avg, o.avg < 1 ? 4 : 2)}</td>
