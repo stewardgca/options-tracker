@@ -133,6 +133,9 @@ tr.low-value td { color: #6aa8ff; }
 tr.low-value td.pos, tr.low-value td.neg { color: #6aa8ff; }
 .clock { display: block; margin-top: 2px; color: var(--muted); }
 .clock svg { width: 12px; height: 12px; }
+.expired-icon { display: block; margin-top: 2px; color: var(--muted); }
+.expired-icon svg { width: 12px; height: 12px; }
+.expired-note { display: block; margin-top: 1px; font-size: 10px; color: var(--muted); }
 .legend-yellow {
   display: inline-block;
   width: 10px;
