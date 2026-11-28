@@ -129,6 +129,8 @@ th {
 
 tr.breached td { background: rgba(255, 92, 92, 0.28); }
 tr.near td { background: rgba(245, 181, 68, 0.22); }
+tr.low-value td { color: #6aa8ff; }
+tr.low-value td.pos, tr.low-value td.neg { color: #6aa8ff; }
 .legend-yellow {
   display: inline-block;
   width: 10px;
@@ -144,6 +146,15 @@ tr.near td { background: rgba(245, 181, 68, 0.22); }
   height: 10px;
   border-radius: 2px;
   background: rgba(255, 92, 92, 0.6);
+  vertical-align: -1px;
+  margin-right: 4px;
+}
+.legend-blue {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #6aa8ff;
   vertical-align: -1px;
   margin-right: 4px;
 }

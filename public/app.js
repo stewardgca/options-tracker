@@ -274,8 +274,13 @@ async function renderOptionsPositions() {
       { day: "numeric", month: "short", year: "numeric" },
     );
     const tr = document.createElement("tr");
-    if (breached) tr.className = "breached";
-    else if (near) tr.className = "near";
+    const lowValue = o.current < 0.2; // option price under $0.20 (25 Nov snapshot)
+    tr.className = [
+      breached ? "breached" : near ? "near" : "",
+      lowValue ? "low-value" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span></td>
       <td>${expiry}</td>
