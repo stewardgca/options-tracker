@@ -295,7 +295,7 @@ async function renderOptionsPositions() {
     tr.innerHTML = `
       <td><span class="sym">${o.symbol} ${o.strike}${o.type}</span>${
         expired
-          ? `<span class="expired-icon" title="Expired"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9l6 6M15 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="expired-note">start new cc</span>`
+          ? `<span class="expired-row"><span class="expired-icon" title="Expired"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9l6 6M15 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="expired-note">start new cc</span></span>`
           : expiringThisWeek
             ? `<span class="clock" title="Expiring this week"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>`
             : ""

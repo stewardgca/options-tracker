@@ -133,9 +133,10 @@ tr.low-value td { color: #6aa8ff; }
 tr.low-value td.pos, tr.low-value td.neg { color: #6aa8ff; }
 .clock { display: block; margin-top: 2px; color: var(--muted); }
 .clock svg { width: 12px; height: 12px; }
-.expired-icon { display: block; margin-top: 2px; color: var(--muted); }
-.expired-icon svg { width: 12px; height: 12px; }
-.expired-note { display: block; margin-top: 1px; font-size: 10px; color: var(--muted); }
+.expired-row { display: block; margin-top: 2px; }
+.expired-icon { display: inline-block; color: var(--bad); vertical-align: middle; }
+.expired-icon svg { width: 12px; height: 12px; vertical-align: middle; }
+.expired-note { display: inline-block; margin-left: 4px; font-size: 10px; color: var(--muted); vertical-align: middle; }
 .legend-yellow {
   display: inline-block;
   width: 10px;
