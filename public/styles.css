@@ -126,6 +126,29 @@ th {
   color: var(--muted);
   font-size: 12px;
 }
+.todo-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  font-size: 13px;
+}
+.todo-list li {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--card-border);
+}
+.todo-list li:last-child { border-bottom: none; }
+.todo-box {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid var(--muted);
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: -1px;
+}
 
 tr.breached td { background: rgba(255, 92, 92, 0.28); }
 tr.near td { background: rgba(245, 181, 68, 0.22); }
